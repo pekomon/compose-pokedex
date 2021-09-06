@@ -17,7 +17,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.pekomon.composepokedex.ui.navigation.Destinations
 import com.example.pekomon.composepokedex.ui.navigation.NavArguments
 import com.example.pekomon.composepokedex.ui.theme.ComposePokedexTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
