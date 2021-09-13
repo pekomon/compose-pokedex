@@ -108,6 +108,9 @@ obj/
 .idea/gradle.xml
 .idea/jarRepositories.xml
 .idea/navEditor.xml
+### Extra additions
+.idea/deploymentTargetDropDown.xml
+.idea/inspectionProfiles/
 
 # OS-specific files
 .DS_Store
