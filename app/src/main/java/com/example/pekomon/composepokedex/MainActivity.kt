@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
+import com.example.pekomon.composepokedex.pokemonlist.PokemonListScreen
 import com.example.pekomon.composepokedex.ui.navigation.Destinations
 import com.example.pekomon.composepokedex.ui.navigation.NavArguments
 import com.example.pekomon.composepokedex.ui.theme.ComposePokedexTheme
@@ -35,6 +36,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(route = Destinations.DESTINATION_POKEMON_LIST) {
                             // Composables of pokemon list screen
+                            PokemonListScreen(navController = navController)
                         }
                         composable(
                             route = "${Destinations.DESTINATION_POKEMON_DETAILS}/{dominantColor}/{pokemonName}",

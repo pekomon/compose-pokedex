@@ -21,9 +21,8 @@ object AppModule {
     @Provides
     fun providePokemonRepository(
         api: PokemonApi
-    ) : PokemonRepository {
-        return PokemonRepositoryImpl(api)
-    }
+    ) = PokemonRepositoryImpl(api)
+
 
     @Singleton
     @Provides
