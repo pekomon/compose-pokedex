@@ -16,13 +16,14 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-    //
+    
     @Singleton
     @Provides
     fun providePokemonRepository(
         api: PokemonApi
-    ) = PokemonRepositoryImpl(api)
-
+    ) : PokemonRepository {
+        return PokemonRepositoryImpl(api)
+    }
 
     @Singleton
     @Provides
