@@ -9,12 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.internal.isLiveLiteralsEnabled
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -24,6 +19,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -31,12 +27,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.ImageLoader
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import com.example.pekomon.composepokedex.R
 import com.example.pekomon.composepokedex.data.model.PokedexListEntry
 import com.example.pekomon.composepokedex.pokemonlist.viewmodel.PokemonListViewModel
 import com.example.pekomon.composepokedex.ui.navigation.Destinations.DESTINATION_POKEMON_DETAILS
 import com.example.pekomon.composepokedex.ui.theme.RobotoCondensed
+import kotlinx.coroutines.launch
 
 @Composable
 fun PokemonListScreen(
@@ -156,6 +157,7 @@ fun PokemonList(
     }
 }
 
+@ExperimentalCoilApi
 @Composable
 fun PokedexEntry(
     entry: PokedexListEntry,
@@ -165,7 +167,7 @@ fun PokedexEntry(
 ) {
     val defaultDominantColor = MaterialTheme.colors.surface
     var dominantColor by remember {
-        mutableStateOf(Color.Red)
+        mutableStateOf(defaultDominantColor)
     }
 
     Box(
@@ -195,19 +197,35 @@ fun PokedexEntry(
             }
     ) {
         Column {
-            // TODO: Dig the drawable and calculate dominant color
-            Image(
-                painter = rememberImagePainter(
-                    data = entry.imageUrl,
-                    builder = {
-                        crossfade(true)
+
+            val context = LocalContext.current
+
+            val imageLoader = ImageLoader(context)
+
+            val request = ImageRequest.Builder(context)
+                .data(entry.imageUrl)
+                .build()
+
+            val imagePainter = rememberImagePainter(
+                request = request,
+                imageLoader = imageLoader
+            )
+
+            LaunchedEffect(key1 = imagePainter) {
+                launch {
+                    val result = (imageLoader.execute(request) as SuccessResult).drawable
+                    viewModel.calculateDominantColor(result) {
+                        dominantColor = it
                     }
-                ),
+                }
+            }
+
+            Image(
+                painter = imagePainter,
                 contentDescription = entry.pokemonName,
                 modifier = Modifier
                     .size(120.dp)
                     .align(CenterHorizontally)
-
             )
             Text(
                 text = entry.pokemonName,
@@ -220,6 +238,7 @@ fun PokedexEntry(
     }
 }
 
+@ExperimentalCoilApi
 @Composable
 fun PokedexRow(
     rowIndex: Int,
