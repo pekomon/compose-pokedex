@@ -43,7 +43,7 @@ class PokemonListViewModel @Inject constructor(
             )
             when (result) {
                 is Resource.Success -> {
-                    endReached.value = currentPage * PAGE_SIZE >= (result.data!!.count ?: 0)
+                    endReached.value = currentPage * PAGE_SIZE >= (result.data!!.count)
                     val pokedexEntries = result.data.results.mapIndexed { index, entry ->
                         val number = if(entry.url.endsWith("/")) {
                             entry.url.dropLast(1).takeLastWhile { it.isDigit() }
@@ -61,7 +61,7 @@ class PokemonListViewModel @Inject constructor(
 
                     loadError.value = ""
                     isLoading.value = false
-                    pokemonList.value = pokedexEntries
+                    pokemonList.value += pokedexEntries
                 }
                 is Resource.Error -> {
                     loadError.value = result.message ?: "Unknown error"
