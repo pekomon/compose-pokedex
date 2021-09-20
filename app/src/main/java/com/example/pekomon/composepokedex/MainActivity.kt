@@ -8,17 +8,20 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
+import com.example.pekomon.composepokedex.pokemondetail.PokemonDetailScreen
 import com.example.pekomon.composepokedex.pokemonlist.PokemonListScreen
 import com.example.pekomon.composepokedex.ui.navigation.Destinations
 import com.example.pekomon.composepokedex.ui.navigation.NavArguments
 import com.example.pekomon.composepokedex.ui.theme.ComposePokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -57,6 +60,11 @@ class MainActivity : ComponentActivity() {
                                 it.arguments?.getString(NavArguments.ARG_POKEMON_NAME)
                             }
                             // Composables of pokemon details screen
+                            PokemonDetailScreen(
+                                dominantColor = dominantColor,
+                                pokemonName = pokemonName?.lowercase(Locale.ROOT) ?: "",
+                                navController = navController
+                            )
                         }
                     }
                 }
