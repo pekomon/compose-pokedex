@@ -6,7 +6,7 @@ import com.example.pekomon.composepokedex.ui.theme.*
 import java.util.*
 
 fun Type.typeColor(): Color {
-    return when(type.name.toLowerCase(Locale.ROOT)) {
+    return when(type.name.lowercase(Locale.ROOT)) {
         "normal" -> TypeNormal
         "fire" -> TypeFire
         "water" -> TypeWater
