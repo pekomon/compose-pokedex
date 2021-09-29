@@ -98,6 +98,7 @@ class PokemonListViewModel @Inject constructor(
                     loadError.value = result.message ?: "Unknown error"
                     isLoading.value = false
                 }
+                else -> { /* doNothing */ }
             }
         }
     }
